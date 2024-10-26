@@ -2,6 +2,8 @@
 
 #show: template.with()
 
+#set cite(style: "./csl/bib-style.csl")
+
 #show heading: set heading(numbering: none)
 #include "./parts/intro.typ"
 
@@ -21,9 +23,12 @@
 // Conclusion
 #include "./parts/conclusion.typ"
 
-
 // Bibliography
-#bibliography(title: "Список литературы", "./common/bibliography.bib", full: true, style: "./style.csl")
+#set text(lang: "en")
+#bibliography(
+  title: "Список литературы", "./common/bibliography.bib", full: true, style: "./csl/bib-style.csl",
+)
+#set text(lang: "ru")
 
 // Appendix
 #include "./parts/appendix.typ"

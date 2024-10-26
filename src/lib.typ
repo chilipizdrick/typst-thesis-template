@@ -11,28 +11,26 @@
 #let total_page = context[#counter(page).final().at(0)]
 #let total_fig = context[#counter(figure).final().at(0)]
 #let total_table = context[#counter(figure.where(kind: table)).final().at(0)]
-#let total_bib = context (query(selector(ref)).filter(it => it.element == none).map(it => it.target).dedup().len())
+#let total_bib = context (query(selector(ref)).filter(it => it.element ==
+none).map(it => it.target).dedup().len())
 
 #let template(
-  font-type: "Times New Roman",
-  font-size: 14pt,
-  heading1-font-size: 18pt,
-  heading2-font-size: 16pt,
-  link-color: blue,
-  languages: {},
-  body,
+  font-type: "Times New Roman", font-size: 14pt, heading1-font-size: 16pt, heading2-font-size: 14pt,
+  link-color: blue, languages: {}, body,
 ) = {
   // Configure font
-  set text(font: font-type, lang: "ru", size: font-size, fallback: true, hyphenate: false)
+  set text(
+    font: font-type, lang: "ru", size: font-size, fallback: true,
+    hyphenate: false,
+  )
   // Configure page settings
   set page(
     margin: (top: 2cm, bottom: 2cm, left: 2cm, right: 1cm), // размер полей (ГОСТ 7.0.11-2011, 5.3.7)
   )
+
   // Установка свойств параграфа
   set par(
-    justify: true,
-    linebreaks: "optimized",
-    first-line-indent: 2.5em, // Абзацный отступ. Должен быть одинаковым по всему тексту и равен пяти знакам (ГОСТ Р 7.0.11-2011, 5.3.7).
+    justify: true, linebreaks: "optimized", first-line-indent: 2.5em, // Абзацный отступ. Должен быть одинаковым по всему тексту и равен пяти знакам (ГОСТ Р 7.0.11-2011, 5.3.7).
     leading: 1em, // Полуторный интервал (ГОСТ 7.0.11-2011, 5.3.6)
   )
 
@@ -47,7 +45,7 @@
     } else {
       set text(font: font-type, size: font-size)
     }
-    set block(above: 3em, below: 3em) // Заголовки отделяют от текста сверху и снизу тремя интервалами (ГОСТ Р 7.0.11-2011, 5.3.5)
+    set block(above: 2em, below: 2em)
 
     if it.level == 1 {
       pagebreak()
@@ -73,8 +71,12 @@
 
     it
   }
-  set math.equation(numbering: num =>
-  ("(" + (counter(heading.where(level: 1)).get() + (num,)).map(str).join(".") + ")"), supplement: [Уравнение])
+  set math.equation(
+    numbering: num =>
+    (
+      "(" + (counter(heading.where(level: 1)).get() + (num,)).map(str).join(".") + ")"
+    ), supplement: [Уравнение],
+  )
 
   // Настройка рисунков
   show figure: align.with(center)
@@ -98,15 +100,23 @@
   // Set that we're in the body
   state("section").update("body")
 
+  let footnote_reset() = {
+    counter(footnote).update(0)
+  }
+
   set page(
     numbering: "1", // Установка сквозной нумерации страниц
     number-align: center + bottom, // Нумерация страниц сверху, по центру
+    header: footnote_reset(),
   )
-  // counter(page).update(1)
+
+  set footnote(numbering: it => {
+    "*" * counter(footnote).get().at(0)
+  })
 
   // Содержание
   // #align(right)[Стр.]
-  outline(title: "Содержание", indent: 1.5em, depth: 3)
+  outline(title: "Содержание", indent: 1.5em, depth: 3, fill: none)
 
   body
 }

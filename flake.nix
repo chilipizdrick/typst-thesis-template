@@ -16,6 +16,10 @@
             typst
           ];
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
+          # shellHook = ''
+          #   setsid typst watch ./src/main.typ
+          #   setsid zathura ./main.pdf
+          # '';
         };
       };
       imports = [];
