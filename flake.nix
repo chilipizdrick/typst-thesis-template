@@ -2,27 +2,38 @@
   description = "Typst uni devShells";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-utils.url = "github:numtide/flake-utils";
   };
-  outputs = inputs:
-    inputs.flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux"];
-      perSystem = {pkgs, ...}: let
-        alias = pkgs.writeShellScriptBin;
+
+  outputs = {
+    nixpkgs,
+    flake-utils,
+    ...
+  }:
+    flake-utils.lib.eachDefaultSystem (
+      system: let
+        pkgs = import nixpkgs {inherit system;};
+        llvm = pkgs.llvmPackages_latest;
+        lib = nixpkgs.lib;
       in {
-        devShells.default = pkgs.mkShell rec {
-          nativeBuildInputs = [(alias "compile" ''typst compile ./src/thesis.typ ./thesis.pdf'')];
-          buildInputs = with pkgs; [
-            typst
+        devShell = pkgs.mkShell rec {
+          nativeBuildInputs = [
+            llvm.clang-tools
+            llvm.clang
+            llvm.libcxx
           ];
-          LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
-          # shellHook = ''
-          #   setsid typst watch ./src/main.typ
-          #   setsid zathura ./main.pdf
-          # '';
+
+          packages = [
+            pkgs.lldb
+            pkgs.typst
+            pkgs.typstyle
+          ];
+
+          CLANGD_FLAGS = "--query-driver=${pkgs.clang}/bin/clang";
+          CPATH = builtins.concatStringsSep ":" [
+            (lib.makeSearchPathOutput "dev" "include" nativeBuildInputs)
+          ];
         };
-      };
-      imports = [];
-      flake = {};
-    };
+      }
+    );
 }

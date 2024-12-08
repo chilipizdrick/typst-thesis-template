@@ -12,16 +12,10 @@
   if it.level == 1 {
     pagebreak();
   }
-
   it
 }
 
 #include "./parts/intro.typ"
-
-// Enable enumeration
-// #show heading.where(level: 1): set heading(numbering: "1.")
-// #show heading.where(level: 2): set heading(numbering: "1.1.")
-// #show heading.where(level: 3): set heading(numbering: "1.1.1.")
 
 // Chapters of the document
 #part_count.step()
@@ -30,18 +24,21 @@
 #part_count.step()
 #include "./parts/practice.typ"
 
-// Disable enumeration
-// #show heading: set heading(numbering: none)
-
 // Conclusion
 #include "./parts/conclusion.typ"
 
 // Bibliography
 #set text(lang: "en")
 #bibliography(
-  title: "Список литературы", "./common/bibliography.bib", full: true, style: "./csl/bib-style.csl",
+  "./common/bibliography.bib",
+  title: "Список литературы",
+  full: true,
+  style: "./csl/bib-style.csl",
 )
 #set text(lang: "ru")
 
+#counter(figure.where(kind: image)).update(0)
+#counter(figure.where(kind: raw)).update(0)
+#counter(figure.where(kind: table)).update(0)
 // Appendix
 #include "./parts/appendix.typ"
