@@ -52,8 +52,8 @@ int main(int argc, char *argv[]) {
                          "file is\n\""
                       << lrs << "\"\n";
             std::cout << "Execution time: "
-                      << std::chrono::duration_cast<std::chrono::milliseconds>(
-                             stop - start)
+                      << std::chrono::duration_cast<
+                             std::chrono::milliseconds>(stop - start)
                              .count()
                       << "ms\n";
 

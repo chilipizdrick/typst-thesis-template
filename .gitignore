@@ -1,5 +1,5 @@
-target/
+.envrc
 .direnv/
 
-.envrc
+target/
 *.pdf

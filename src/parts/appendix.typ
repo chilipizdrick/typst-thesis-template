@@ -1,5 +1,4 @@
 #import "../lib.typ": *
-#show: fix-indent()
 
 = Приложение
 
@@ -126,13 +125,16 @@
   }
   ```,
   supplement: [Приложение],
-  caption: [Реализация функции `SuffixTree::LRS`.] 
+  caption: [Реализация функции `SuffixTree::LRS`.],
 ) <appendix-LRS>
 
 #pagebreak()
 
 #context counter(figure.where(supplement: [Приложение])).step()
-#heading(level: 2, outlined: false)[Приложение #context counter(figure.where(supplement: [Приложение])).get().at(0). Код реализованной программы] <appendix-program>
+#heading(
+  level: 2,
+  outlined: false,
+)[Приложение #context counter(figure.where(supplement: [Приложение])).get().at(0). Код реализованной программы] <appendix-program>
 
 #heading(level: 3, outlined: false)[Файл _SuffixTree.h_]
 

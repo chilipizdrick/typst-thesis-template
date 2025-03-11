@@ -1,8 +1,7 @@
 #import "@preview/unify:0.7.0": *
-#import "@preview/codly:1.0.0": *
+#import "@preview/codly:1.2.0": *
 #import "@preview/tablex:0.0.9": *
 #import "@preview/physica:0.9.3": *
-#import "@preview/indenta:0.0.3": fix-indent
 
 #let part_count = counter("parts")
 #let total_part = context [#part_count.final().at(0)]
@@ -11,7 +10,13 @@
 #let total_page = context [#counter(page).final().at(0)]
 #let total_fig = context [#counter(figure).final().at(0)]
 #let total_table = context [#counter(figure.where(kind: table)).final().at(0)]
-#let total_bib = context (query(selector(ref)).filter(it => it.element == none).map(it => it.target).dedup().len())
+#let total_bib = context (
+  query(selector(ref))
+    .filter(it => it.element == none)
+    .map(it => it.target)
+    .dedup()
+    .len()
+)
 
 #let template(
   font-type: "Times New Roman",
@@ -43,7 +48,7 @@
   set par(
     justify: true,
     linebreaks: "optimized",
-    first-line-indent: 2.5em,
+    first-line-indent: (amount: 2.5em, all: true),
     leading: 1.5em,
     spacing: 1.5em,
   )
@@ -62,9 +67,11 @@
     it
   }
 
-  set ref(supplement: it => {
-    if it.func() == figure { }
-  })
+  set ref(
+    supplement: it => {
+      if it.func() == figure { }
+    },
+  )
 
   show: codly-init.with()
   codly(
@@ -72,7 +79,11 @@
     zebra-fill: rgb("#f7f7f7"),
     stroke: 1pt + gray,
     lang-format: none,
+    smart-indent: true,
   )
+
+  show raw.where(block: true): set par(first-line-indent: 0em)
+  show raw.where(block: true): set text(size: 10pt, font: "JetBrains Mono NL")
 
   let eq_number(it) = {
     let part_number = counter(heading.where(level: 1)).get()
@@ -81,7 +92,11 @@
     it
   }
   set math.equation(
-    numbering: num => ("(" + (counter(heading.where(level: 1)).get() + (num,)).map(str).join(".") + ")"),
+    numbering: num => (
+      "("
+        + (counter(heading.where(level: 1)).get() + (num,)).map(str).join(".")
+        + ")"
+    ),
     supplement: [Уравнение],
   )
 
@@ -106,12 +121,12 @@
 
   state("section").update("body")
 
-  set footnote(numbering: it => {
-    "*" * counter(footnote).get().at(0)
-  })
+  set footnote(
+    numbering: it => {
+      "*" * counter(footnote).get().at(0)
+    },
+  )
 
   body
 }
-
-#let indent-par(it) = par[#h(2.5em)#it]
 

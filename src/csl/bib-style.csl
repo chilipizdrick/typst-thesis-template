@@ -21,17 +21,19 @@
     <terms>
       <term name="et-al"></term>
       <term name="editor" form="verb">ed. by</term>
-      <term name="accessed">дата обращения</term>
-      <term name="ibid">Ibid. </term>
+      <term name="accessed">visited on</term>
+      <term name="page" form="short">P.</term>
+      <term name="volume" form="short">Vol.</term>
+      <term name="ibid">Ibid.</term>
     </terms>
   </locale>
   <locale xml:lang="ru">
     <terms>
       <term name="et-al"></term>
-      <term name="editor" form="short">ред. </term>
+      <term name="editor" form="short">ред.</term>
       <term name="accessed">дата обращения</term>
-      <term name="page">C. </term>
-      <term name="volume" form="short">Т. </term>
+      <term name="page" form="short">C.</term>
+      <term name="volume" form="short">Т.</term>
       <term name="editor" form="short">ред.</term>
       <term name="ibid">Там же.</term>
     </terms>

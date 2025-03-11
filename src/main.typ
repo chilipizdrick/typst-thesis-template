@@ -6,11 +6,13 @@
 #counter(page).update(2)
 
 // Table of contents
-#outline(title: "Содержание", indent: 1.5em, depth: 3, fill: none)
+#show outline.entry: set outline.entry(fill: none)
+#outline(title: "Содержание", indent: 1.5em, depth: 3)
+
 
 #show heading: it => {
   if it.level == 1 {
-    pagebreak();
+    pagebreak()
   }
   it
 }
