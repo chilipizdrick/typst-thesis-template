@@ -26,8 +26,8 @@
   heading-numbering: none,
   pagebreak-h1-headings: true,
   part-dependent-figure-counters: false,
-  cite-style: "gost-r-705-2008-numeric",
-  bibliography-style: "gost-r-705-2008-numeric",
+  enable-figure-supplements: true,
+  enable-figure-numbering: true,
   body,
 ) = {
   let footnote-reset() = {
@@ -101,31 +101,40 @@
   set footnote(numbering: it => "*" * counter(footnote).get().at(0))
 
   // Set citation style
-  set cite(style: cite-style)
+  set cite(style: "./assets/gost-r-7-0-5-2008-citations.csl")
 
   // Set outline style
   show outline: set outline(indent: 1.5em, depth: 3, title: "Содержание")
 
   // Set figure styles
-  set figure(numbering: num => {
-    if part-dependent-figure-counters {
-      let part-count = context counter(heading.where(level: 1)).get().at(0)
-      [#part-count.#num]
-    } else {
-      [#num]
-    }
-  })
-  set figure.caption(separator: [ --- ])
   show figure: align.with(center)
   show figure: set block(breakable: false)
-  // Set image figure style
-  show figure.where(kind: image): set figure(supplement: [Рисунок])
+
+  set figure(numbering: num => {
+    if enable-figure-numbering {
+      if part-dependent-figure-counters {
+        let part-count = context counter(heading.where(level: 1)).get().at(0)
+        [#part-count.#num]
+      } else {
+        [#num]
+      }
+    } else []
+  })
+
+  set figure.caption(separator: if enable-figure-supplements
+    or enable-figure-numbering [ . ] else [])
+  show figure.where(kind: image): set figure(
+    supplement: if enable-figure-supplements [Рисунок] else [],
+  )
+  show figure.where(kind: table): set figure(
+    supplement: if enable-figure-supplements [Таблица] else [],
+  )
+  show figure.where(kind: raw): set figure(
+    supplement: if enable-figure-supplements [Код] else [],
+  )
+
   show figure.where(kind: image): set figure.caption(position: bottom)
-  // Set table figure style
-  show figure.where(kind: table): set figure(supplement: [Таблица])
   show figure.where(kind: table): set figure.caption(position: top)
-  // Set listing figure style
-  show figure.where(kind: raw): set figure(supplement: [Код])
   show figure.where(kind: raw): set figure.caption(position: bottom)
 
   // Set math equation style
@@ -165,13 +174,13 @@
   show bibliography: set bibliography(
     title: "Список литературы",
     full: true,
-    style: bibliography-style,
+    style: "./assets/gost-r-7-0-5-2008-bibliograpy.csl",
   )
 
   body
 }
 
-#let enable-heading-numbering(style: "1.", h1-style: "Глава 1.", body) = {
+#let enable-heading-numbering(style: "1.", h1-style: "1.", body) = {
   show heading: set heading(numbering: style)
   show heading.where(level: 1): set heading(numbering: h1-style)
 
@@ -217,4 +226,3 @@
 #let statement(body) = {
   special-section("Утверждение", "statement", body)
 }
-
