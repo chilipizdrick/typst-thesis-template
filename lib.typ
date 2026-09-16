@@ -16,12 +16,12 @@
   page-margin: (left: 3cm, right: 1cm, top: 2cm, bottom: 2cm),
   page-number-align: bottom + center,
   par-first-line-indent: (amount: 1.25cm, all: true),
-  par-spacing: 1.5em,
-  par-line-spacing: 1.5em,
-  table-par-line-spacing: 1em,
-  footnote-par-spacing: 1.5em,
-  footnote-par-line-spacing: 1em,
+  par-spacing: 1em,
+  par-line-spacing: 1em,
   table-par-spacing: 1em,
+  table-par-line-spacing: 1em,
+  footnote-par-spacing: 1em,
+  footnote-par-line-spacing: 1em,
   heading-spacing: 2.5em,
   heading-numbering: none,
   pagebreak-h1-headings: true,
@@ -121,8 +121,7 @@
     } else []
   })
 
-  set figure.caption(separator: if enable-figure-supplements
-    or enable-figure-numbering [ . ] else [])
+  set figure.caption(separator: if enable-figure-supplements or enable-figure-numbering [ . ] else [])
   show figure.where(kind: image): set figure(
     supplement: if enable-figure-supplements [Рисунок] else [],
   )

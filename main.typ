@@ -1,4 +1,4 @@
-#import "lib.typ": *
+#import "../lib.typ": *
 
 #show: template.with()
 #include-pdf-page("./assets/title.pdf")
@@ -12,4 +12,3 @@
 #include "./parts/results.typ"
 #bibliography("./assets/bibliography.bib")
 #include "./parts/appendix.typ"
-
