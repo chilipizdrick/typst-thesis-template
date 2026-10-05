@@ -101,7 +101,7 @@
   set footnote(numbering: it => "*" * counter(footnote).get().at(0))
 
   // Set citation style
-  set cite(style: "./assets/gost-r-7-0-5-2008-citations.csl")
+  set cite(style: "assets/gost-r-7-0-5-2008-citations.csl")
 
   // Set outline style
   show outline: set outline(indent: 1.5em, depth: 3, title: "Содержание")
@@ -173,7 +173,7 @@
   show bibliography: set bibliography(
     title: "Список литературы",
     full: true,
-    style: "./assets/gost-r-7-0-5-2008-bibliograpy.csl",
+    style: "assets/gost-r-7-0-5-2008-bibliograpy.csl",
   )
 
   body
