@@ -121,7 +121,8 @@
     } else []
   })
 
-  set figure.caption(separator: if enable-figure-supplements or enable-figure-numbering [ . ] else [])
+  set figure.caption(separator: if enable-figure-supplements
+    or enable-figure-numbering [ . ] else [])
   show figure.where(kind: image): set figure(
     supplement: if enable-figure-supplements [Рисунок] else [],
   )
@@ -149,6 +150,27 @@
     supplement: [Уравнение],
   )
   show math.equation: set text(font: math-font)
+  show math.equation.where(block: false): box
+  show ref: it => {
+    let el = it.element
+    if el != none and el.func() == math.equation {
+      let loc = el.location()
+      let num = counter(math.equation).at(loc).at(0)
+      let num-str = if part-dependent-figure-counters {
+        let part-count = counter(heading.where(level: 1)).at(loc).at(0)
+        [#part-count.#num]
+      } else {
+        [#num]
+      }
+      if it.supplement != auto and it.supplement != [] {
+        link(it.target)[#it.supplement #num-str]
+      } else {
+        link(it.target)[#num-str]
+      }
+    } else {
+      it
+    }
+  }
 
   // Set table style
   set table(align: center + horizon)
